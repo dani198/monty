@@ -1,5 +1,4 @@
 #include "monty.h"
-
 /**
  * core_stack_queue - Function that manages stack and queue
  * @stack: stack structure
@@ -13,19 +12,15 @@ void core_stack_queue(stack_t **stack, unsigned int line_number, int sq)
 	char buff[10024];
 	char *b = buff;
 	list_t *t = NULL;
-
 	if (sq != 0)
 	{
 		turn = sq;
 		return;
 	}
-
 	t = list_opcode;
-
 	for (; t->next; t = t->next)
 		if (t->n == (int) line_number)
 			break;
-
 	i = cpy_arg(t, b);
 
 	j = check_arg(b);
@@ -40,7 +35,6 @@ void core_stack_queue(stack_t **stack, unsigned int line_number, int sq)
 	else
 		add_nodeint(stack, atoi(buff));
 }
-
 /**
  * print_error_push - function that prints error
  * @stack: stack structure
