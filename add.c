@@ -1,24 +1,22 @@
 #include "monty.h"
 /**
- * add - Function that adds top values
- * @stack: stack structure
- * @line_number: Number of instructions
+ * m_add - add the top two elements of the stack
+ * @stack: double pointer tot he beginning of the stack
+ * @line_number: script line number
+ *
+ * Return: void
  */
-void add(stack_t **stack, unsigned int line_number)
+void m_add(stack_t **stack, unsigned int line_number)
 {
-stack_t *temp = NULL;
-int n;
-n = stack_len(*stack);
-if (n < 2)
+int n = 0;
+if (var.stack_len < 2)
 {
-fprintf(stderr, "L%d: can't add, stack too short\n", line_number);
-if (list_opcode != NULL)
-free_list_opcode(list_opcode);
-if (*stack != NULL)
-free_list_stack(*stack);
+dprintf(STDOUT_FILENO,
+"L%u: can't add, stack too short\n",
+line_number);
 exit(EXIT_FAILURE);
 }
-temp = *stack;
-temp->next->n += temp->n;
-pop(stack, line_number);
+n += (*stack)->n;
+m_pop(stack, line_number);
+(*stack)->n += n;
 }
