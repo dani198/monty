@@ -1,44 +1,41 @@
 #include "monty.h"
-bus_t bus = {NULL, NULL, NULL, 0};
+global_t var;
 /**
-* main - monty code interpreter
-* @argc: number of arguments
-* @argv: monty file location
-* Return: 0 on success
-*/
-int main(int argc, char *argv[])
+ * init_var - initializes the global variables
+ *
+ * Return: no return
+ */
+void init_var(void)
 {
-char *content;
-FILE *file;
+	var.bufline = NULL;
+	var.cmd = NULL;
+	var.value = NULL;
+	var.head = NULL;
+	var.line_number = 0;
+	var.mode = 1;
+}
+/**
+ * main - Entry point
+ *
+ * @argc: argument count
+ * @argv: argument vector
+ * Return: 0 on success
+ */
+int main(int argc, char **argv)
+{
 size_t size = 0;
-ssize_t read_line = 1;
-stack_t *stack = NULL;
-unsigned int counter = 0;
-	if (argc != 2)
-	{
-		fprintf(stderr, "USAGE: monty file\n");
-		exit(EXIT_FAILURE);
-	}
-	file = fopen(argv[1], "r");
-	bus.file = file;
-	if (!file)
-	{
-		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
-		exit(EXIT_FAILURE);
-	}
-	while (read_line > 0)
-	{
-		content = NULL;
-		read_line = getline(&content, &size, file);
-		bus.content = content;
-		counter++;
-		if (read_line > 0)
+if (argc != 2)
+erro(1);
+init_var();
+var.fd = fopen(argv[1], "r");
+if (!var.fd)
+erro(2, argv[1]);
+while (getline(&var.bufline, &size, var.fd) != EOF)
 {
-execute(content, &stack, counter, file);
+var.line_number++;
+run_cmd(var.bufline);
 }
-free(content);
-}
-free_stack(stack);
-fclose(file);
-return (0);
+free_var(), free_stack();
+fclose(var.fd);
+return (EXIT_SUCCESS);
 }
